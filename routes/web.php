@@ -13,10 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', 'HomeController@welcome')->name('welcome');
+
+Route::get('/', 'AppController@index')->middleware('auth');
+
+/*
+Verb          Path                           Action  Route Name
+GET           /category                      index   category.index
+GET           /category/create               create  category.create
+POST          /category                      store   category.store
+GET           /category/{user}               show    category.show
+GET           /category/{user}/edit          edit    category.edit
+PUT|PATCH     /category/{user}               update  category.update
+DELETE        /category/{user}               destroy category.destroy
+*/
+Route::resource('category', CategoryController::class)->only(['index','store','show','update','destroy'])->middleware('auth');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
