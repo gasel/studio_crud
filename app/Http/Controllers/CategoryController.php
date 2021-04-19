@@ -15,7 +15,12 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $categories = Category::with('parent:id,name')->get(/*['id','code','name','description']*/);
+        $categories = Category::with('parent:id,name')->get(['id','code','name','description','parent_id']);
+        /*$categories = Category::query()
+            ->with(array('parent' => function($query) {
+                $query->select('id','name');
+            }))
+            ->get(['id','code','name','description','parent_id']);*/
         return response()->json($categories);
     }
 
