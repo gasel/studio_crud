@@ -6,15 +6,17 @@
 
 require('./bootstrap');
 import vue from 'vue'
+// Set Vue globally
 window.Vue = vue;
 
-// window.Vue = require('vue');
-
-import App from './components/App.vue';
-import VueRouter from 'vue-router';
-import VueAxios from 'vue-axios';
+import 'es6-promise/auto';
 import axios from 'axios';
-import {routes} from './routes';
+import VueAuth from '@websanova/vue-auth';
+import VueAxios from 'vue-axios';
+import VueRouter from 'vue-router';
+import App from './components/App.vue';
+import auth from './auth';
+import router from './routes';
 
 /**
  * The following block of code may be used to automatically register your
@@ -27,15 +29,15 @@ import {routes} from './routes';
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
+// Set Vue router
+Vue.router = router;
 Vue.use(VueRouter);
+
+// Set Vue authentication
 Vue.use(VueAxios, axios);
- 
-const router = new VueRouter({
-    mode: 'history',
-    routes: routes
-});
+axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
+Vue.use(VueAuth, auth);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -43,6 +45,7 @@ const router = new VueRouter({
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+// Load App
 const app = new Vue({
     el: '#app',
     router: router,

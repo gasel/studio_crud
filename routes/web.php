@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', 'HomeController@welcome')->name('welcome');
+// Route to handle page reload in Vue except for api routes
+Route::get('/{any?}', 'AppController@index')->where('any', '^(?!api\/)[\/\w\.-]*');
 
 Route::get('/', 'AppController@index')->middleware('auth');
 
